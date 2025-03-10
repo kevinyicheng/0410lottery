@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家庭旅遊行程</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>🏡 家族旅行計畫 📅</h1>
+        <p id="countdown"></p>
+    </header>
+
+    <section class="itinerary">
+        <h2>✨ 旅行行程 ✨</h2>
+
+        <!-- Day 1 -->
+        <div class="day" onclick="toggleDetails('day1')">
+            <h3>🚗 DAY 1：彰化探索之旅 🌿</h3>
+            <div class="details" id="day1">
+                <p><strong>10:00</strong> - <a href="#">八卦山大佛</a>（天空步道）</p>
+                <p><strong>12:00</strong> - 午餐：<a href="#">全師傅創意料理</a></p>
+                <p>🥯 順便購買：<a href="#">大元蔴薯</a> / <a href="#">玉瓏坊</a></p>
+                <p><strong>14:30</strong> - <a href="#">台灣優格餅乾學院</a></p>
+                <p><strong>16:30</strong> - 進入民宿 🏠</p>
+                <p><strong>17:30</strong> - 晚餐 & 逛 <a href="#">鹿港老街</a></p>
+                <p>🍪 點心選擇：<a href="#">鄭玉珍餅舖</a> / <a href="#">玉珍齋</a></p>
+                <p><strong>21:00</strong> - <a href="#">玻璃媽祖廟</a>（21:00 關門）</p>
+                <p>回到民宿 🌙</p>
+            </div>
+        </div>
+
+        <!-- Day 2 -->
+        <div class="day" onclick="toggleDetails('day2')">
+            <h3>🌅 DAY 2：文化體驗 🏛️</h3>
+            <div class="details" id="day2">
+                <p><strong>9:00</strong> - 早餐（楊州肉圓芋圓 / 西式早餐）</p>
+                <p><strong>9:30</strong> - 退房 🏠</p>
+                <p><strong>9:45</strong> - <a href="#">吳家牛舌餅</a></p>
+                <p><strong>10:30</strong> - <a href="#">成美文化園區</a></p>
+                <p><strong>13:00</strong> - 午餐 🍜（北斗肉圓生 / 中華鍋貼 / 香菇高麗菜飯）</p>
+                <p><strong>14:30</strong> - <a href="#">永靖故事牆</a></p>
+                <p><strong>15:00</strong> - 賦歸 🏡</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>💖 期待美好的家庭旅行！ 🚗💨</p>
+    </footer>
+</body>
+</html>
