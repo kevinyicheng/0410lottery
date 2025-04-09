@@ -1,55 +1,231 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>家庭旅遊行程</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
-    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+    <title>抽獎小工具</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            padding: 40px;
+            background: linear-gradient(to right, #d8c7ff, #f2e7fe);
+            color: #4a2c6d;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #6a1b9a;
+            text-align: center;
+        }
+
+        textarea {
+            width: 100%;
+            max-width: 600px;
+            height: 200px;
+            padding: 15px;
+            font-size: 16px;
+            border: 2px solid #ab47bc;
+            border-radius: 12px;
+            resize: vertical;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(8px);
+            color: #4a2c6d;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #8e24aa;
+            box-shadow: 0 0 8px rgba(142, 36, 170, 0.3);
+        }
+
+        button {
+            font-size: 18px;
+            padding: 12px 24px;
+            margin: 15px 10px 0 0;
+            border: none;
+            border-radius: 8px;
+            background-color: #8e24aa;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        button:hover {
+            background-color: #6a1b9a;
+            box-shadow: 0 4px 12px rgba(106, 27, 154, 0.4);
+        }
+
+        .results {
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.25);
+            border: 2px solid #ab47bc;
+            padding: 20px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 6px 15px rgba(106, 27, 154, 0.2);
+            backdrop-filter: blur(10px);
+            text-align: left;
+        }
+
+        .winner-group {
+            margin-bottom: 20px;
+        }
+
+        .group-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #6a1b9a;
+            margin-bottom: 10px;
+        }
+
+        .winner {
+            font-size: 16px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            color: #4a2c6d;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        p {
+            max-width: 600px;
+            margin-bottom: 10px;
+            color: #6a1b9a;
+            text-align: center;
+        }
+
+        #countdown {
+            font-size: 20px;
+            color: #d81b60;
+            margin-top: 15px;
+            font-weight: bold;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        @keyframes shake {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            20% { transform: translate(-5px, 2px) rotate(-5deg); }
+            40% { transform: translate(5px, -2px) rotate(5deg); }
+            60% { transform: translate(-3px, 1px) rotate(-3deg); }
+            80% { transform: translate(3px, -1px) rotate(3deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        .cheer-emoji {
+            font-size: 28px;
+            animation: shake 0.5s infinite;
+        }
+    </style>
 </head>
+
 <body>
-    <header>
-        <h1>🏡 家族旅行計畫 📅</h1>
-        <p id="countdown"></p>
-    </header>
+    <h1>抽獎小工具</h1>
+    <p>請在下方文字區輸入名單，一行一個名字</p>
+    <textarea id="nameList" placeholder="例如：
+張一
+李二
+王三"></textarea>
+    
+    <div class="btn-group">
+        <button onclick="drawLottery()">開始抽獎</button>
+        <button onclick="resetPage()" style="background-color: #ce93d8; color: #4a2c6d;">重置</button>
+    </div>
+    
+    <div id="countdown"></div>
+    <div id="results" class="results" style="display: none">
+        <h2>中獎名單</h2>
+        <div id="winnerList"></div>
+    </div>
 
-    <section class="itinerary">
-        <h2>✨ 旅行行程 ✨</h2>
+    <script>
+        let hasDrawn = false;
 
-        <!-- Day 1 -->
-        <div class="day" onclick="toggleDetails('day1')">
-            <h3>🚗 DAY 1：彰化探索之旅 🌿</h3>
-            <div class="details" id="day1">
-                <p><strong>10:00</strong> - <a href="#">八卦山大佛</a>（天空步道）</p>
-                <p><strong>12:00</strong> - 午餐：<a href="#">全師傅創意料理</a></p>
-                <p>🥯 順便購買：<a href="#">大元蔴薯</a> / <a href="#">玉瓏坊</a></p>
-                <p><strong>14:30</strong> - <a href="#">台灣優格餅乾學院</a></p>
-                <p><strong>16:30</strong> - 進入民宿 🏠</p>
-                <p><strong>17:30</strong> - 晚餐 & 逛 <a href="#">鹿港老街</a></p>
-                <p>🍪 點心選擇：<a href="#">鄭玉珍餅舖</a> / <a href="#">玉珍齋</a></p>
-                <p><strong>21:00</strong> - <a href="#">玻璃媽祖廟</a>（21:00 關門）</p>
-                <p>回到民宿 🌙</p>
-            </div>
-        </div>
+        function drawLottery() {
+            if (hasDrawn) {
+                alert("已經抽過了，如需重新抽獎請按下重置");
+                return;
+            }
 
-        <!-- Day 2 -->
-        <div class="day" onclick="toggleDetails('day2')">
-            <h3>🌅 DAY 2：文化體驗 🏛️</h3>
-            <div class="details" id="day2">
-                <p><strong>9:00</strong> - 早餐（楊州肉圓芋圓 / 西式早餐）</p>
-                <p><strong>9:30</strong> - 退房 🏠</p>
-                <p><strong>9:45</strong> - <a href="#">吳家牛舌餅</a></p>
-                <p><strong>10:30</strong> - <a href="#">成美文化園區</a></p>
-                <p><strong>13:00</strong> - 午餐 🍜（北斗肉圓生 / 中華鍋貼 / 香菇高麗菜飯）</p>
-                <p><strong>14:30</strong> - <a href="#">永靖故事牆</a></p>
-                <p><strong>15:00</strong> - 賦歸 🏡</p>
-            </div>
-        </div>
-    </section>
+            const input = document.getElementById("nameList").value.trim();
+            if (!input) {
+                alert("請輸入名單");
+                return;
+            }
 
-    <footer>
-        <p>💖 期待美好的家庭旅行！ 🚗💨</p>
-    </footer>
+            const names = input.split(/\n|\r/).map(n => n.trim()).filter(n => n);
+            if (names.length < 40) {
+                alert("名單至少需要40人");
+                return;
+            }
+
+            let countdownNum = 5;
+            const countdownDiv = document.getElementById("countdown");
+            countdownDiv.innerHTML = `抽獎倒數：${countdownNum} 秒... <span class="cheer-emoji">🎉</span>`;
+
+            const countdownInterval = setInterval(() => {
+                countdownNum--;
+                if (countdownNum > 0) {
+                    countdownDiv.innerHTML = `抽獎倒數：${countdownNum} 秒... <span class="cheer-emoji">🎉</span>`;
+                } else {
+                    clearInterval(countdownInterval);
+                    countdownDiv.innerText = "抽獎中...";
+
+                    // 洗牌
+                    for (let i = names.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [names[i], names[j]] = [names[j], names[i]];
+                    }
+
+                    const winners = names.slice(0, 40);
+                    const winnerListDiv = document.getElementById("winnerList");
+                    let output = '';
+
+                    // 分成四組，每組10人
+                    for (let group = 0; group < 4; group++) {
+                        const start = group * 10;
+                        const groupWinners = winners.slice(start, start + 10);
+                        output += `<div class="winner-group">
+                            <div class="group-title">第 ${group + 1} 組</div>
+                            <div class="winner">${groupWinners
+                                .map((name, index) => `${start + index + 1}. ${name}`)
+                                .join('\n')}</div>
+                        </div>`;
+                    }
+
+                    winnerListDiv.innerHTML = output;
+                    document.getElementById("results").style.display = "block";
+                    countdownDiv.innerText = "抽獎完成！";
+                    hasDrawn = true;
+                }
+            }, 1000);
+        }
+
+        function resetPage() {
+            location.reload();
+        }
+    </script>
 </body>
 </html>
