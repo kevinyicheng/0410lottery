@@ -21,10 +21,11 @@
             justify-content: center;
             min-height: 100vh;
             margin: 0;
+            font-size: 18px; /* 基礎字體增大 */
         }
 
         h1 {
-            font-size: 32px;
+            font-size: 48px; /* 標題放大 */
             margin-bottom: 20px;
             color: #6a1b9a;
             text-align: center;
@@ -33,9 +34,9 @@
         textarea {
             width: 100%;
             max-width: 600px;
-            height: 200px;
+            height: 250px; /* 稍微增加高度以適應大字體 */
             padding: 15px;
-            font-size: 16px;
+            font-size: 20px; /* 輸入區字體放大 */
             border: 2px solid #ab47bc;
             border-radius: 12px;
             resize: vertical;
@@ -51,8 +52,8 @@
         }
 
         button {
-            font-size: 18px;
-            padding: 12px 24px;
+            font-size: 24px; /* 按鈕字體放大 */
+            padding: 15px 30px; /* 按鈕內距加大 */
             margin: 15px 10px 0 0;
             border: none;
             border-radius: 8px;
@@ -72,7 +73,7 @@
             margin-top: 30px;
             background: rgba(255, 255, 255, 0.25);
             border: 2px solid #ab47bc;
-            padding: 20px;
+            padding: 25px; /* 增加內距 */
             border-radius: 12px;
             width: 100%;
             max-width: 600px;
@@ -82,19 +83,19 @@
         }
 
         .winner-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px; /* 組間距稍加大 */
         }
 
         .group-title {
-            font-size: 18px;
+            font-size: 24px; /* 組標題放大 */
             font-weight: bold;
             color: #6a1b9a;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .winner {
-            font-size: 16px;
-            line-height: 1.6;
+            font-size: 20px; /* 中獎名單字體放大 */
+            line-height: 1.8; /* 增加行距以提升可讀性 */
             white-space: pre-wrap;
             color: #4a2c6d;
         }
@@ -111,10 +112,11 @@
             margin-bottom: 10px;
             color: #6a1b9a;
             text-align: center;
+            font-size: 20px; /* 提示文字放大 */
         }
 
         #countdown {
-            font-size: 20px;
+            font-size: 28px; /* 倒數文字放大 */
             color: #d81b60;
             margin-top: 15px;
             font-weight: bold;
@@ -135,7 +137,7 @@
         }
 
         .cheer-emoji {
-            font-size: 28px;
+            font-size: 36px; /* emoji 放大 */
             animation: shake 0.5s infinite;
         }
     </style>
@@ -193,7 +195,6 @@
                     clearInterval(countdownInterval);
                     countdownDiv.innerText = "抽獎中...";
 
-                    // 洗牌
                     for (let i = names.length - 1; i > 0; i--) {
                         const j = Math.floor(Math.random() * (i + 1));
                         [names[i], names[j]] = [names[j], names[i]];
@@ -203,7 +204,6 @@
                     const winnerListDiv = document.getElementById("winnerList");
                     let output = '';
 
-                    // 分成四組，每組10人
                     for (let group = 0; group < 4; group++) {
                         const start = group * 10;
                         const groupWinners = winners.slice(start, start + 10);
